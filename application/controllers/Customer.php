@@ -65,19 +65,24 @@ class Customer extends REST_Controller {
     }
     
     function askbill_put(){
-        $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/Customer/askbill/no_nota/7
-        $nota = $data['no_nota'];
-        $query = $this->db->query("update nota set status = 1 where no_nota = '$nota' and no_nota in (select DISTINCT no_nota from koki)");
+        /*$data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/Customer/askbill/no_nota/7
+        $nota = $data['no_nota'];*/
         
-        
-        if($this->db->affected_rows() == 0){
-            $this->response('0 affected rows');
-        }else if($query){
-            $this->response('Confirmed',200);
-        }else{
-            $this->response(array('status' => 'fail', 502));
-        } 
+        $data = $this->put();
+        echo $data['nota'];
+//        $query = $this->db->query("update nota set status = 1 where no_nota = '$nota' and no_nota in (select DISTINCT no_nota from koki)");
+//        
+//        
+//        if($this->db->affected_rows() == 0){
+//            $this->response('0 affected rows');
+//        }else if($query){
+//            $this->response('Confirmed',200);
+//        }else{
+//            $this->response(array('status' => 'fail', 502));
+//        } 
     }
+    
+    
     
     function nota_get(){
         

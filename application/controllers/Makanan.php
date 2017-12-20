@@ -11,8 +11,9 @@ class Makanan extends REST_Controller {
         $this->load->database();
     }
     
-    function index_get(){
+    function list_get(){
         $id = $this->get('id');
+
         if ($id == ''){
             $makanan = $this->db->get('makanan')->result();
         } else {
