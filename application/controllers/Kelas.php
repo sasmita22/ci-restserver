@@ -4,12 +4,47 @@ class Bahan
 {
     public $id_bahan;
     public $nama_bahan;
-    public $jumlah_bahan;
+    public $stok;
 		
-    function __construct($id_bahan, $nama_bahan, $jumlah_bahan){
+    function __construct($id_bahan, $nama_bahan, $stok){
 	$this->id_bahan = $id_bahan;
 	$this->nama_bahan = $nama_bahan;
-	$this->jumlah_bahan = $jumlah_bahan;
+	$this->stok = $stok;
+    }
+}
+
+
+class MakananTemp {
+    public $id_makanan;
+    public $nama;
+    public $jenis;
+    public $tag;
+    public $deskripsi;
+    public $harga;
+    public $path;
+    public $bahan = array();
+
+    function __construct($id_makanan, $nama, $jenis, $tag , $deskripsi, $harga, $path, $bahan){
+        $this->id_makanan = $id_makanan;
+        $this->nama = $nama;
+        $this->jenis = $jenis;
+        $this->tag = $tag;
+        $this->deskripsi = $deskripsi;
+        $this->harga = $harga;
+        $this->path = $path;
+        $this->bahan = $bahan;
+    }
+}
+
+
+class DetailBahan
+{
+    public $id_bahan;
+    public $qty;
+        
+    function __construct($id_bahan, $qty){
+        $this->id_bahan = $id_bahan;
+        $this->qty = $qty;
     }
 }
 

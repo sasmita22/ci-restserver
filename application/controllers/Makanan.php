@@ -3,6 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH . 'libraries/REST_Controller.php';
+require 'Kelas.php';
 use Restserver\Libraries\REST_Controller;
 
 class Makanan extends REST_Controller {
@@ -11,16 +12,27 @@ class Makanan extends REST_Controller {
         $this->load->database();
     }
     
-    function list_get(){
-        $id = $this->get('id');
+    function index_get(){
+        $query = $this->db->query("SELECT * FROM makanan");
+        
+        $makanan = array();
+        foreach ($query->result() as $row){
+            
+            $query1 = $this->db->query("SELECT id_bahan,qty FROM rincian_bahan where id_makanan = '" .$row->id_makanan."'");
+            
+            $bahan = array();
+            foreach ($query1->result() as $row1){
+                
+                $bahan[] = new DetailBahan($row1->id_bahan,$row1->qty);
+            }
+            $makanan[] = new MakananTemp($row->id_makanan,$row->nama,$row->jenis,$row->tag,$row->deskripsi,$row->harga,$row->path,$bahan);
+        } 
 
-        if ($id == ''){
-            $makanan = $this->db->get('makanan')->result();
-        } else {
-            $this->db->where('id_makanan',$id);
-            $makanan = $this->db->get('makanan')->result();
+        if(count($makanan) != 0){
+            $this->response($makanan,200);
+        }else{
+            $this->response(array('status' => 'kosong'), 502);
         }
-        $this->response($makanan,200);
     }
     
     function index_post(){
@@ -44,8 +56,6 @@ class Makanan extends REST_Controller {
     }
     
     function index_put(){
-        $id = $this->put('id_makanan');
-        
         $makanan = array(
             'id_makanan' => $this->put('id_makanan'),
             'nama' => $this->put('nama'),
