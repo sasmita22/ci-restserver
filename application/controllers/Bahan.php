@@ -61,19 +61,19 @@ class Bahan extends REST_Controller {
 
 		$this->db->where('id_bahan',$id);
         $update = $this->db->update('bahan',$bahan);
-        if ($update){
+        if ($this->db->affected_rows() > 0){
             $this->response('Update data dengan id : '.$id.' berhasil',200);
         }else{
             $this->response(array('status'=>'fail', 502));
         }
 	}
 
-	function index_delete(){
-		$id = $this->delete('id');
+	function index_delete($id){
+
 		$this->db->where('id_bahan',$id);
         $delete = $this->db->delete('bahan');
 
-        if ($delete) {
+        if ($this->db->affected_rows() > 0) {
             $this->response('Delete data dengan id : '.$id.' berhasil',200);
         }else{
             $this->response(array('status'=>'fail', 502));

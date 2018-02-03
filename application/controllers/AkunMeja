@@ -61,7 +61,7 @@ class AkunMeja extends REST_Controller {
         }
     }
 
-    function index_delete(){
+    function index_delete($username){
         $username = $this->delete('username');
         $this->db->where('username',$username);
         $delete = $this->db->delete('akun_meja');

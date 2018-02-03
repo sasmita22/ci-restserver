@@ -39,18 +39,64 @@ class Kasir extends REST_Controller {
     
     function konfirmasi_put(){
         //$data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/Kasir/konfirmasi/no_nota/7
-
+        $error = 0;
+        $this->db->trans_begin();
+        $total = 0;
         $nota = $this->put('no_nota');
-        $query = $this->db->query("update nota set status = 2 where no_nota = '$nota' and no_nota in (select DISTINCT no_nota from rincian_kasir)");
-        
+        $this->db->query("update nota set status = 2 where no_nota = '$nota' and no_nota in (select DISTINCT no_nota from rincian_kasir)");
         
         if($this->db->affected_rows() == 0){
-            $this->response('0 affected rows');
-        }else if($query){
-            $this->response('Confirmed',200);
+            $error++;
+        }
+
+        $query1 = $this->db->get_where("nota",array("no_nota"=>$nota))->result();
+        $tanggal = $query1[0]->tanggal;
+        $no_meja = $query1[0]->no_meja;
+
+        $query2 = $this->db->insert("histori_nota",array("no_nota"=>$nota,"no_meja"=>$no_meja,"tanggal"=>$tanggal));
+
+        if(!$query2){
+            $error++;
+        }
+
+        $query3 = $this->db->query("select b.nama, b.harga, a.qty from rincian_kasir a, makanan b where a.id_makanan = b.id_makanan and a.no_nota = '$nota'");
+
+        foreach ($query3->result() as $row) {
+            $query4 = $this->db->insert("histori_pesanan",array("no_nota"=>$nota,"makanan"=>$row->nama,"harga"=>$row->harga,"qty"=>$row->qty));
+            $total = $total + ($row->harga*$row->qty);
+
+            if(!$query4){
+                $error++;
+            }
+        }
+
+        $this->db->where("no_nota",$nota);
+        $this->db->update("histori_nota",array("total"=>$total));
+
+        if ($this->db->affected_rows() == 0){
+            $error++;
+        }
+
+        $this->db->delete("rincian_kasir", array("no_nota"=>$nota));
+
+        if ($this->db->affected_rows() == 0){
+            $error++;
+        }
+
+        $this->db->delete("nota", array("no_nota"=>$nota));
+
+        if ($this->db->affected_rows() == 0){
+            $error++;
+        }
+
+        if($error==0){
+            $this->db->trans_commit();
+            $this->response('Konfirmasi Berhasil',200);
         }else{
+            $this->db->trans_rollback();
             $this->response(array('status' => 'fail', 502));
-        }  
+        } 
+
     }
 
     function totalbayar_get(){
