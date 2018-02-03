@@ -14,27 +14,36 @@ class Meja extends REST_Controller {
     function index_get(){
         $no_meja = $this->get('no_meja');
         
-        $this->db->select('pass,no_meja,status');
-        $this->db->where('no_meja',$no_meja);
-        $akun_meja = $this->db->get('akun_meja')->result();
+        if($no_meja == ''){
+            $this->db->select('pass,no_meja,status');
+            $this->db->order_by('no_meja','asc');
+            $akun_meja = $this->db->get('akun_meja')->result();
+        }else{
+            $this->db->select('pass,no_meja,status');
+            $this->db->order_by('no_meja','asc');
+            $this->db->where('no_meja',$no_meja);
+            $akun_meja = $this->db->get('akun_meja')->result();
+        }
+        
      
         $this->response($akun_meja,200);
     }
     
     function passlog_get(){
-        $no_meja = $this->get('no_meja');
+        $username = $this->get('username');
         
         $this->db->select('pass,no_meja,status');
-        $this->db->where('no_meja',$no_meja);
+        $this->db->where('username',$username);
         $akun_meja = $this->db->get('akun_meja')->result();
      
         $this->response($akun_meja,200);
     }
     
     function login_put(){
-        $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/login/no_meja/7
-        $no_meja = $data['no_meja'];
-        //$no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/login?no_meja=7
+        // $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/login/no_meja/7
+        // $no_meja = $data['no_meja'];
+        // $no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/login?no_meja=7
+        $no_meja = $this->put('no_meja');
         
         $this->db->where('no_meja',$no_meja);
         $berhasil = $this->db->update('akun_meja',array('status'=>1));
@@ -46,9 +55,10 @@ class Meja extends REST_Controller {
     }
     
     function logout_put(){
-        $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/logout/no_meja/7
-        $no_meja = $data['no_meja'];
-        //$no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/logout?no_meja=7
+        // $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/logout/no_meja/7
+        // $no_meja = $data['no_meja'];
+        // $no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/logout?no_meja=7
+        $no_meja = $this->put('no_meja');
         
         $this->db->where('no_meja',$no_meja);
         $berhasil = $this->db->update('akun_meja',array('status'=>0));
@@ -60,10 +70,11 @@ class Meja extends REST_Controller {
     }
     
     function onservice_put(){
-        $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/onservices/no_meja/7
-        $no_meja = $data['no_meja'];
+        // $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/onservices/no_meja/7
+        // $no_meja = $data['no_meja'];
         //$no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/onservices?no_meja=7
-        
+        $no_meja = $this->put('no_meja');
+
         $this->db->where('no_meja',$no_meja);
         $berhasil = $this->db->update('meja',array('status'=>1));
         if($berhasil){
@@ -74,10 +85,11 @@ class Meja extends REST_Controller {
     }
     
     function outofservice_put(){
-        $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/outofservice/no_meja/7
-        $no_meja = $data['no_meja'];
+        // $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/meja/outofservice/no_meja/7
+        // $no_meja = $data['no_meja'];
         //$no_meja =  $this->input->get('no_meja'); //http://localhost/ci-restserver/index.php/meja/outofservice?no_meja=7
-        
+        $no_meja = $this->put('no_meja');
+
         $this->db->where('no_meja',$no_meja);
         $berhasil = $this->db->update('meja',array('status'=>0));
         if($berhasil){

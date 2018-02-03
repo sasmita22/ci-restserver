@@ -27,7 +27,7 @@ class Customer extends REST_Controller {
 	           $this->response('Suksek ganti status meja',200);
             
 
-    		    $query = $this->db->query("insert into nota(no_nota, no_meja) values('".$pesanan['no_nota']."','".$pesanan['meja']."')");
+    		    $query = $this->db->query("insert into nota(no_nota,tanggal,no_meja) values('".$pesanan['no_nota']."','".$pesanan['tanggal']."','".$pesanan['meja']."')");
 
     		    if ($query){
                     $this->response('Sukses membuat row nota',200);
@@ -81,24 +81,43 @@ class Customer extends REST_Controller {
         /*$data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/Customer/askbill/no_nota/7
         $nota = $data['no_nota'];*/
         
-        $data = $this->put();
+        $data = $this->put('no_nota');
         
-        $query = $this->db->query("update nota set status = 1 where no_nota = '".$data['nota']."' and no_nota in (select DISTINCT no_nota from koki)");
-        
-        
-        if($this->db->affected_rows() == 0){
-            $this->response('0 affected rows');
-        }else if($query){
+
+        //$query = $this->db->query("update nota set status = 1 where no_nota = '$data' and no_nota in (select DISTINCT no_nota from koki)");
+        $query = $this->db->query("update nota set status = 1 where no_nota = '$data'");
+
+
+        if($this->db->affected_rows() > 0){
             $this->response('Confirmed',200);
         }else{
+            $this->response(array('status' => $query, 502));
+        } 
+    }
+    
+    function feedback_put(){
+        $feedback = $this->put('feedback');
+        $no_nota = $this->put('no_nota');
+
+        $this->db->set('feedback', $feedback);
+        $this->db->where('no_nota', $no_nota);
+        $this->db->update('nota');
+
+        if($this->db->affected_rows() == 0){
+            $this->response('0 affected rows');
+        }else if($this->db->affected_rows() > 0){
+            $this->response('Confirmed',200);
+        } else{
             $this->response(array('status' => 'fail', 502));
         } 
     }
     
-    
-    
     function nota_get(){
-        
+        $this->db->select_max('no_nota');
+        $result = $this->db->get('nota'); 
+        $nota = $result->row()->no_nota+1;
+        $response = array("no_nota"=>$nota);
+        $this->response($response);   
     }
 
 }

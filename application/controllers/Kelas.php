@@ -1,15 +1,19 @@
 <?php
 
-class Bahan
+class BahanClass
 {
     public $id_bahan;
     public $nama_bahan;
+    public $tgl_kadaluarsa;
     public $stok;
+    public $status;
 		
-    function __construct($id_bahan, $nama_bahan, $stok){
-	$this->id_bahan = $id_bahan;
-	$this->nama_bahan = $nama_bahan;
-	$this->stok = $stok;
+    function __construct($id_bahan, $nama_bahan, $tgl_kadaluarsa, $stok, $status){
+    	$this->id_bahan = $id_bahan;
+    	$this->nama_bahan = $nama_bahan;
+        $this->tgl_kadaluarsa = $tgl_kadaluarsa;
+    	$this->stok = $stok;
+        $this->status = $status;
     }
 }
 
@@ -36,15 +40,36 @@ class MakananTemp {
     }
 }
 
+class Meja {
+    public $no_meja;
+    public $status;
+    public $total;
+    public $listpesanan;
 
-class DetailBahan
-{
+    function __construct($no_meja,$status,$total,$listpesanan){
+        $this->no_meja = $no_meja;
+        $this->status = $status;
+        $this->total = $total;
+        $this->listpesanan = $listpesanan; 
+    }
+}
+
+
+class DetailBahan{
     public $id_bahan;
+    public $nama;
+    public $kadaluarsa;
     public $qty;
+    public $stok;
+    public $status;
         
-    function __construct($id_bahan, $qty){
+    function __construct($id_bahan, $nama, $qty, $stok,$kadaluarsa, $status){
         $this->id_bahan = $id_bahan;
+        $this->nama = $nama;
         $this->qty = $qty;
+        $this->stok = $stok;
+        $this->kadaluarsa = $kadaluarsa;
+        $this->status = $status;
     }
 }
 
@@ -83,12 +108,14 @@ class Cashier
     public $meja;
     public $tanggal;
     public $no_nota;
+    public $total;
     public $listpesanan = array();
 
-    function __construct($meja, $tanggal, $no_nota, $listpesanan){
+    function __construct($meja, $tanggal, $no_nota, $total,$listpesanan){
 	$this->meja = $meja;
 	$this->tanggal = $tanggal;
 	$this->no_nota = $no_nota;
+    $this->total = $total;
 	$this->listpesanan = $listpesanan;
     }
 }

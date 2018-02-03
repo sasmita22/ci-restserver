@@ -42,8 +42,9 @@ class Koki extends REST_Controller {
         // $data = $this->uri->uri_to_assoc();  //http://localhost/ci-restserver/index.php/Koki/konfirmasi
         // $pesanan = $data['pesanan'];
 
-        $data = $this->put();
-        $query = $this->db->query("update koki set status = 1 where kode_pesanan = '".$data['pesanan']."' ");
+        $data = $this->put('pesanan');
+
+        $query = $this->db->query("update koki set status = 1 where kode_pesanan = '$data' ");
         
         
         if($this->db->affected_rows() == 0){
