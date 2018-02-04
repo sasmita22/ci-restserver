@@ -13,7 +13,22 @@ class Riwayat extends REST_Controller {
     }
 
     function index_get(){
-    	
+    	$query = $this->db->get("histori_nota");
+        $histori = array();
+        foreach ($query->result() as $row) {
+            $query1 = $this->db->get_where("histori_pesanan",array("no_nota"=>$row->no_nota));
+            $listpesanan = array();
+            foreach ($query1->result() as $row1) {
+                $listpesanan[] = array("nama_makanan" => $row1->makanan, "harga"=>$row1->harga, "qty"=>$row1->qty);
+            }
+            $histori[] = array("no_nota"=>$row->no_nota,"no_meja"=>$row->no_meja,"tanggal"=>$row->tanggal,"total"=>$row->total,"pesanan"=>$listpesanan);
+        }
+
+        if(count($histori) > 0){
+            $this->response($histori,200);
+        }else{
+            $this->response(array('status' => 'kosong'), 502);
+        }
     }
 
     function index_delete($nota){
@@ -38,6 +53,17 @@ class Riwayat extends REST_Controller {
             $this->response("Delete riwayat berhasil",200);
         }else{
             $this->db->trans_rollback();
+            $this->response(array('status'=>'fail', 502));
+        }
+    }
+
+    function index_delete($no_meja){
+        $this->db->where('no_meja',$no_meja);
+        $delete = $this->db->delete('meja');
+
+        if ($this->db->affected_rows() > 0) {
+            $this->response('Delete meja : '.$no_meja.' berhasil',200);
+        }else{
             $this->response(array('status'=>'fail', 502));
         }
     }

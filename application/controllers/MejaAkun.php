@@ -3,15 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH . 'libraries/REST_Controller.php';
+require 'Kelas.php';
 use Restserver\Libraries\REST_Controller;
 
-class AkunMeja extends REST_Controller {
-    public function __construct($config = 'rest') {
-        parent::__construct($config);
-        $this->load->database();
-    }
-
-    function index_get(){
+class MejaAkun extends REST_Controller {
+	function index_get(){
         $no_meja = $this->get('no_meja');
         
         if($no_meja == ''){
@@ -30,19 +26,25 @@ class AkunMeja extends REST_Controller {
     }
 
     function index_post(){
-        $akun_meja = array(
-            "username" => $this->post('username');          
-            "pass" => $this->post("pass");          
-            "no_meja" => $this->post('no_meja');                           
-        );
+        // $this->db->trans_begin();
 
-        $insert = $this->db->insert('akun_meja',$akun_meja);
+        // $akun_meja = array(
+        //     "username" => $this->post('username');          
+        //     "pass" => $this->post("pass");          
+        //     "no_meja" => $this->post('no_meja');                           
+        // );
+
+        // $insert = $this->db->insert('akun_meja',$akun_meja);
+        // $insert2 = $this->db->insert('meja', array("no_meja"=>$akun_meja['no_meja']));
         
-        if($insert){
-            $this->response('Berhasil Menambah akun meja',200);
-        }else{
-            $this->response(array('status' => 'fail', 502));
-        }
+        // if($insert){
+        //     $this->db->trans_commit();
+        //     $this->response('Berhasil Menambah akun meja',200);
+        // }else{
+        //     $this->db->trans_rollback();
+        //     $this->response(array('status' => 'fail', 502));
+        // }
+        echo "string";
     }
 
     function index_put(){

@@ -25,7 +25,6 @@ class Pesanan extends REST_Controller {
 			$pesanan[] = $listmakanan;
 		}
 
-		echo $meja;
 		if (count($pesanan)==0){
 				$this->response(array('status'=>'data kosong',502));
 		}else {

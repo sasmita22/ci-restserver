@@ -25,7 +25,7 @@ class Koki extends REST_Controller {
                 $bahan = array();
                 
                 foreach ($query2->result() as $row2){
-                    $bahan[] = new Bahan($row2->id_bahan,$row2->nama_bahan,$row2->qty);
+                    $bahan[] = array("id_bahan"=>$row2->id_bahan,"nama_bahan"=>$row2->nama_bahan,"stok"=>$row2->qty);
                 }
                 $makanan[] = new Makanan_Koki($row1->id_makanan,$row1->nama,$row1->qty,$bahan);
             }
