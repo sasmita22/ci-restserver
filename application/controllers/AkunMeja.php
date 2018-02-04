@@ -49,7 +49,7 @@ class AkunMeja extends REST_Controller {
         
         if($error == 0){
             $this->db->trans_commit();
-            $this->response('Berhasil Menambah akun meja',200);
+            $this->response(array('status'=>'success'),200);
         }else{
             $this->db->trans_rollback();
             $this->response(array('status' => 'fail', 502));
