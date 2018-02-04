@@ -144,9 +144,6 @@ class Makanan extends REST_Controller {
 
         $this->db->where('id_makanan',$id1);
         $delete = $this->db->delete('rincian_bahan');
-        if($this->db->affected_rows() == 0){
-            $error++;
-        }
 
         $this->db->where('id_makanan',$id1);
         $delete1 = $this->db->delete('makanan'); 
@@ -156,7 +153,7 @@ class Makanan extends REST_Controller {
            
         if ($error == 0) {
             $this->db->trans_commit();
-            $this->response("Delete data dengan id : ".$id1." berhasil",200);
+            $this->response(array("status"=>"success"),200);
         }else{
             $this->db->trans_rollback();
             $this->response(array('status'=>'fail', 502));

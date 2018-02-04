@@ -35,8 +35,7 @@ class Bahan extends REST_Controller {
 	}
 
 	function index_post(){
-		$bahan = array(
-			"id_bahan" => $this->post('id_bahan'),		
+		$bahan = array(	
 			"nama_bahan" => $this->post('nama_bahan'),		
 			"tgl_kadaluarsa" => $this->post('tgl_kadaluarsa'),			
 			"stok" => $this->post('stok')					
@@ -45,7 +44,7 @@ class Bahan extends REST_Controller {
 		$insert = $this->db->insert('bahan',$bahan);
         
         if($insert){
-            $this->response('Berhasil Menambah bahan',200);
+            $this->response(array('status'=>'success'),200);
         }else{
             $this->response(array('status' => 'fail', 502));
         }   
@@ -74,7 +73,7 @@ class Bahan extends REST_Controller {
         $delete = $this->db->delete('bahan');
 
         if ($this->db->affected_rows() > 0) {
-            $this->response('Delete data dengan id : '.$id.' berhasil',200);
+            $this->response(array("status"=>'success'),200);
         }else{
             $this->response(array('status'=>'fail', 502));
         }

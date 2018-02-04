@@ -51,9 +51,9 @@ class Kasir extends REST_Controller {
 
         $query1 = $this->db->get_where("nota",array("no_nota"=>$nota))->result();
         $tanggal = $query1[0]->tanggal;
-        $no_meja = $query1[0]->no_meja;
+        $feedback = $query1[0]->feedback;
 
-        $query2 = $this->db->insert("histori_nota",array("no_nota"=>$nota,"no_meja"=>$no_meja,"tanggal"=>$tanggal));
+        $query2 = $this->db->insert("histori_nota",array("no_nota"=>$nota,"feedback"=>$feedback,"tanggal"=>$tanggal,));
 
         if(!$query2){
             $error++;

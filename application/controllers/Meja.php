@@ -98,5 +98,16 @@ class Meja extends REST_Controller {
             $this->response(array('status'=>'fail', 502));
         }
     }
+
+    function index_delete($no_meja){
+        $this->db->where('no_meja',$no_meja);
+        $delete = $this->db->delete('meja');
+
+        if ($this->db->affected_rows() > 0) {
+            $this->response('Delete meja : '.$no_meja.' berhasil',200);
+        }else{
+            $this->response(array('status'=>'fail', 502));
+        }
+    }
 }
 

@@ -15,11 +15,9 @@ class AkunMeja extends REST_Controller {
         $no_meja = $this->get('no_meja');
         
         if($no_meja == ''){
-            $this->db->select('pass,no_meja,status');
             $this->db->order_by('no_meja','asc');
             $akun_meja = $this->db->get('akun_meja')->result();
         }else{
-            $this->db->select('pass,no_meja,status');
             $this->db->order_by('no_meja','asc');
             $this->db->where('no_meja',$no_meja);
             $akun_meja = $this->db->get('akun_meja')->result();
@@ -59,27 +57,27 @@ class AkunMeja extends REST_Controller {
     }
 
     function index_put(){
-        $username = $this->put('username');
+        $no_meja = $this->put('no_meja');
         $akun_meja = array(                   
-            "pass" => $this->put("pass"),         
-            "no_meja" => $this->put('no_meja'),                  
+            "username" => $this->put("username"),         
+            "pass" => $this->put('pass'),                  
         );
 
-        $this->db->where('username',$username);
+        $this->db->where('no_meja',$no_meja);
         $update = $this->db->update('akun_meja',$akun_meja);
-        if ($update){
-            $this->response('Update akun : '.$username.' berhasil',200);
+        if ($this->db->affected_rows() > 0){
+            $this->response(array('status'=>'success'),200);
         }else{
             $this->response(array('status'=>'fail', 502));
         }
     }
 
-    function index_delete($username){
-        $this->db->where('username',$username);
+    function index_delete($no_meja){
+        $this->db->where('no_meja',$no_meja);
         $delete = $this->db->delete('akun_meja');
 
         if ($this->db->affected_rows() > 0) {
-            $this->response('Delete akun : '.$username.' berhasil',200);
+            $this->response(array('status'=>'success'),200);
         }else{
             $this->response(array('status'=>'fail', 502));
         }
